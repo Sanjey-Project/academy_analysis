@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Marks | Academy Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="upload">
+    <div class="app-shell">
+      <aside id="sidebar"></aside>
+      <section class="content-wrap">
+        <header id="topbar"></header>
+        <main class="grid">
+          <section class="card">
+            <form id="uploadForm">
+              <div class="split">
+                <div>
+                  <label>Student ID</label>
+                  <input name="studentId" required placeholder="STU-1001" />
+                </div>
+                <div>
+                  <label>Subject</label>
+                  <input name="subject" required placeholder="Mathematics" />
+                </div>
+              </div>
+              <div class="split">
+                <div>
+                  <label>Marks</label>
+                  <input name="marks" type="number" min="0" max="100" required />
+                </div>
+                <div>
+                  <label>Exam Type</label>
+                  <select name="examType" required>
+                    <option value="unit-test">Unit Test</option>
+                    <option value="mid-term">Mid Term</option>
+                    <option value="final">Final</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn primary" type="submit">Submit Marks</button>
+            </form>
+            <p id="uploadMessage" class="helper"></p>
+          </section>
+        </main>
+      </section>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
+

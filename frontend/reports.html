@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports | Academy Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="reports">
+    <div class="app-shell">
+      <aside id="sidebar"></aside>
+      <section class="content-wrap">
+        <header id="topbar"></header>
+        <main class="grid cards-2">
+          <section class="card">
+            <h3>Export Academic Report</h3>
+            <p class="helper">Send report generation request to backend export endpoint.</p>
+            <button id="exportCsv" class="btn primary">Export CSV</button>
+            <p id="reportStatus" class="helper"></p>
+          </section>
+          <section class="card">
+            <h3>Report Types</h3>
+            <ul>
+              <li>Class-wise monthly performance</li>
+              <li>Subject-wise scoring summary</li>
+              <li>Attendance and pass-rate records</li>
+              <li>Top student ranking data</li>
+            </ul>
+          </section>
+        </main>
+      </section>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
