@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics | Academy Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="analytics">
+    <div class="app-shell">
+      <aside id="sidebar"></aside>
+      <section class="content-wrap">
+        <header id="topbar"></header>
+        <main class="grid cards-2">
+          <section class="card">
+            <h3>Class-wise Pass Rate</h3>
+            <canvas id="passRateChart"></canvas>
+          </section>
+          <section class="card">
+            <h3>Growth Trend</h3>
+            <canvas id="growthChart"></canvas>
+          </section>
+        </main>
+      </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
+
