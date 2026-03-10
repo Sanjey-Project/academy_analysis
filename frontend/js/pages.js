@@ -6,6 +6,7 @@ import {
   classWisePassRate
 } from "./data.js";
 import { exportReport, uploadMarks } from "./api.js";
+import { reportHandledError } from "./error-reporter.js";
 
 function statusPill(score) {
   return score >= 80
@@ -201,7 +202,12 @@ export function initUpload() {
       message.textContent = "Marks uploaded successfully.";
       message.style.color = "var(--success)";
       form.reset();
-    } catch {
+    } catch (error) {
+      await reportHandledError("Upload marks request failed", {
+        page: "upload",
+        type: "upload-submit",
+        payload
+      });
       message.textContent = "Backend unavailable. Payload validated on UI and ready for API.";
       message.style.color = "var(--warning)";
     }
@@ -217,7 +223,12 @@ export function initReports() {
       await exportReport("csv");
       status.textContent = "Report request sent to backend endpoint successfully.";
       status.style.color = "var(--success)";
-    } catch {
+    } catch (error) {
+      await reportHandledError("Report export request failed", {
+        page: "reports",
+        type: "report-export",
+        format: "csv"
+      });
       status.textContent = "Could not reach backend export endpoint. UI integration is ready.";
       status.style.color = "var(--warning)";
     }
