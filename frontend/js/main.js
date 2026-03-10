@@ -1,5 +1,6 @@
 import { renderLayout } from "./layout.js";
 import { initTheme, wireThemeToggle } from "./theme.js";
+import { initGlobalErrorReporting, reportFrontendError } from "./error-reporter.js";
 import {
   initDashboard,
   initStudents,
@@ -12,6 +13,7 @@ import {
 } from "./pages.js";
 
 initTheme();
+initGlobalErrorReporting();
 
 const page = document.body.dataset.page;
 if (page && page !== "login") {
@@ -31,5 +33,10 @@ const handlers = {
 };
 
 if (handlers[page]) {
-  handlers[page]();
+  try {
+    handlers[page]();
+  } catch (error) {
+    reportFrontendError(error, { page, type: "page-init" });
+    throw error;
+  }
 }
