@@ -1,19 +1,43 @@
+import { reportFrontendError } from "./error-reporter.js";
+
 const headers = {
   "Content-Type": "application/json"
 };
 
 async function request(url, options = {}) {
-  const response = await fetch(url, {
-    ...options,
-    headers: { ...headers, ...(options.headers || {}) }
-  });
+  const method = options.method || "GET";
 
-  if (!response.ok) {
-    throw new Error(`API error ${response.status}: ${response.statusText}`);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: { ...headers, ...(options.headers || {}) }
+    });
+
+    if (!response.ok) {
+      const error = new Error(`API error ${response.status}: ${response.statusText}`);
+      await reportFrontendError(error, {
+        type: "api-response",
+        endpoint: url,
+        method,
+        status: response.status,
+        statusText: response.statusText
+      });
+      error.frontendReported = true;
+      throw error;
+    }
+
+    if (response.status === 204) return null;
+    return response.json();
+  } catch (error) {
+    if (!error.frontendReported) {
+      await reportFrontendError(error, {
+        type: "api-request",
+        endpoint: url,
+        method
+      });
+    }
+    throw error;
   }
-
-  if (response.status === 204) return null;
-  return response.json();
 }
 
 export function fetchDashboardSummary() {
