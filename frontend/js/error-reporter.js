@@ -11,6 +11,15 @@ function trim(value) {
   return String(value).slice(0, MAX_MESSAGE_LENGTH);
 }
 
+function escapeHtml(value) {
+  return trim(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 function safeJson(value) {
   try {
     return JSON.stringify(value);
@@ -65,19 +74,53 @@ function shouldSkipDuplicate(details, context) {
 }
 
 function buildCardMessage(details, context = {}) {
-  const metadata = buildMetadata(context);
-  const lines = [
-    "*Frontend Error Alert*",
-    `Page: ${trim(window.location.href)}`,
-    `Error: ${trim(details.name)}`,
-    `Message: ${trim(details.message)}`,
-    `Stack: ${trim(details.stack)}`,
-    `Context: ${trim(Object.keys(metadata).length ? safeJson(metadata) : "N/A")}`,
-    `Time: ${new Date().toISOString()}`,
-    `User Agent: ${trim(navigator.userAgent)}`
-  ];
+  const stackHtml = escapeHtml(details.stack).replaceAll("\n", "<br>");
+  const textFallback = [
+    "*Error Alert*",
+    "",
+    `*Error Message:* ${trim(details.message)}`,
+    "",
+    "*Stack Trace:*",
+    `\`${trim(details.stack)}\``
+  ].join("\n");
 
-  return { text: lines.join("\n") };
+  return {
+    text: textFallback,
+    cardsV2: [
+      {
+        cardId: "frontend-error-alert",
+        card: {
+          header: {
+            title: "Error Alert",
+            subtitle: trim(details.name),
+            imageType: "SQUARE"
+          },
+          sections: [
+            {
+              header: "Error Message",
+              widgets: [
+                {
+                  textParagraph: {
+                    text: escapeHtml(details.message)
+                  }
+                }
+              ]
+            },
+            {
+              header: "Stack Trace",
+              widgets: [
+                {
+                  textParagraph: {
+                    text: `<code>${stackHtml}</code>`
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  };
 }
 
 export async function reportFrontendError(errorLike, context = {}) {
